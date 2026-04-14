@@ -56,7 +56,7 @@ src/
 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/stellar-live-poll.git
+git clone https://github.com/ashakumbhar08/polling-dapp-stellar
 cd stellar-live-poll
 ```
 
@@ -69,7 +69,7 @@ npm install
 3. Create a `.env` file in the project root
 
 ```env
-VITE_CONTRACT_ID=CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+VITE_CONTRACT_ID=CCHO6GFEGJW3RUXAAYGP5UFS7MUTF423JLLEQQ3AWVCPZMY5SAD242BI
 VITE_HORIZON_URL=https://horizon-testnet.stellar.org
 VITE_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
 ```
@@ -89,8 +89,8 @@ The app runs at [http://localhost:5173](http://localhost:5173).
 | Field | Value |
 |---|---|
 | Network | Stellar Testnet |
-| Contract Address | `CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
-| Deploy Transaction Hash | `XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
+| Contract Address | `CCHO6GFEGJW3RUXAAYGP5UFS7MUTF423JLLEQQ3AWVCPZMY5SAD242BI` |
+| Deploy Transaction Hash | `98fd67b2afbd19b9371d669fad4c606bf1d16b4d08efb058ddbe7f543788f5a4` |
 | Soroban RPC URL | `https://soroban-testnet.stellar.org` |
 
 ## How It Works
