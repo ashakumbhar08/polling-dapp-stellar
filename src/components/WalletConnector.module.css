@@ -1,45 +1,56 @@
 .wrapper {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
 }
 
-.btnConnect,
-.btnDisconnect {
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-sm);
-  border: none;
+/* Connect pill */
+.connectBtn {
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 239, 150, 0.35);
+  background: rgba(255, 239, 150, 0.07);
+  color: #f5ede4;
   font-size: var(--text-sm);
-  font-weight: 600;
-  transition: background-color var(--transition-fast);
+  font-weight: 500;
+  transition: background var(--transition-base), border-color var(--transition-base),
+              box-shadow var(--transition-base), transform var(--transition-base);
 }
 
-.btnConnect {
-  background-color: var(--color-primary);
-  color: #fff;
+.connectBtn:hover {
+  background: rgba(255, 239, 150, 0.13);
+  border-color: rgba(255, 239, 150, 0.6);
+  box-shadow: 0 4px 16px rgba(255, 239, 150, 0.08);
+  transform: translateY(-1px);
 }
 
-.btnConnect:hover {
-  background-color: var(--color-primary-hover);
-}
-
-.btnDisconnect {
-  background-color: var(--color-surface);
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
-}
-
-.btnDisconnect:hover {
-  color: var(--color-error);
-  border-color: var(--color-error);
-}
-
-.address {
+/* Connected address pill */
+.addressPill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(178, 178, 178, 0.16);
+  background: rgba(80, 57, 76, 0.6);
+  color: var(--c-gray);
   font-family: var(--font-mono);
   font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-base), color var(--transition-base),
+              background var(--transition-base);
+}
+
+.addressPill:hover {
+  border-color: rgba(224, 112, 112, 0.45);
+  color: #e07070;
+  background: rgba(80, 57, 76, 0.8);
+}
+
+/* Connected dot */
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-success);
+  flex-shrink: 0;
+  animation: pulse-dot 1.8s ease-in-out infinite;
 }

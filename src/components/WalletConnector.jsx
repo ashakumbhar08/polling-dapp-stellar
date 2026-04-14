@@ -1,7 +1,6 @@
 import { useWallet } from '../context/WalletContext.jsx'
 import styles from './WalletConnector.module.css'
 
-/** Shorten a Stellar public key for display: GABC…WXYZ */
 function truncate(address) {
   if (!address) return ''
   return `${address.slice(0, 4)}…${address.slice(-4)}`
@@ -13,11 +12,9 @@ export default function WalletConnector() {
   if (isConnected && publicKey) {
     return (
       <div className={styles.wrapper}>
-        <span className={styles.address} title={publicKey}>
+        <button className={styles.addressPill} title={publicKey} onClick={disconnect}>
+          <span className={styles.dot} />
           {truncate(publicKey)}
-        </span>
-        <button className={styles.btnDisconnect} onClick={disconnect}>
-          Disconnect
         </button>
       </div>
     )
@@ -25,7 +22,7 @@ export default function WalletConnector() {
 
   return (
     <div className={styles.wrapper}>
-      <button className={styles.btnConnect} onClick={connect}>
+      <button className={styles.connectBtn} onClick={connect}>
         Connect Wallet
       </button>
     </div>

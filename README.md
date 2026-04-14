@@ -1,178 +1,145 @@
-# Stellar Live Poll dApp
+# 🗳️ Stellar Live Poll dApp
 
-A decentralised live polling application built on the Stellar Testnet using Soroban smart contracts. Users connect a Stellar wallet, cast votes on-chain, and see results update in real-time via Horizon SSE.
+> A decentralized polling application on the Stellar Testnet — connect your wallet, cast a vote on-chain, and watch results update in real time.
 
----
+Built for the **Stellar Level 2 Developer Challenge**, this dApp demonstrates end-to-end Soroban smart contract integration with a modern React frontend, multi-wallet support, and live vote streaming via Horizon SSE.
 
 ## Features
 
-- Multi-wallet support via StellarWalletsKit (Freighter, xBull, Albedo, Lobstr)
-- On-chain voting through a deployed Soroban `PollContract`
-- Real-time vote count updates via Horizon SSE with 5-second fallback polling
-- Full transaction status tracking: Building → Signing → Submitting → Pending → Success / Failed
-- Mapped error messages for user rejection, insufficient balance, and duplicate votes
-- Auto-reconnect wallet on page refresh
-- Tab-focus re-fetch via `visibilitychange`
-
----
+- 🔗 **Multi-wallet connection** — Freighter, xBull, Albedo, and Lobstr via a single modal
+- 🗳️ **On-chain voting** — votes are submitted as Soroban contract invocations on Stellar Testnet
+- 📡 **Real-time results** — Horizon SSE streams new transactions; vote bars animate on every update
+- 🔄 **Transaction status flow** — BUILDING → SIGNING → SUBMITTING → PENDING → SUCCESS / FAILED
+- ❌ **Error handling** — user rejected, insufficient XLM balance, already voted, network timeout
+- 📜 **Poll History** — live, append-only feed of recent votes with Stellar Expert links
+- ➕ **Create Poll UI** — compose a new poll question and options (UI-ready)
+- 🔁 **Auto-reconnect** — wallet session restored on page refresh via localStorage
+- 📱 **Responsive layout** — works on mobile and desktop
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
 | Frontend | React 18 + Vite |
-| Wallet | @creit.tech/stellar-wallets-kit |
-| Blockchain SDK | @stellar/stellar-sdk v13 |
-| Smart Contract | Soroban (Rust) |
-| Network | Stellar Testnet |
+| Wallet Integration | @creit.tech/stellar-wallets-kit |
+| Blockchain SDK | @stellar/stellar-sdk v13 (Soroban) |
+| Smart Contract | Soroban (Rust), deployed on Stellar Testnet |
+| Real-time Updates | Horizon SSE (`EventSource`) |
 | Styling | CSS Modules |
-
----
-
-## Prerequisites
-
-- Node.js ≥ 18
-- A Stellar Testnet wallet (Freighter recommended for testing)
-- A deployed `PollContract` on Stellar Testnet
-
----
-
-## Installation
-
-```bash
-npm install
-```
-
----
-
-## Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-VITE_CONTRACT_ID=<your_deployed_contract_address>
-VITE_HORIZON_URL=https://horizon-testnet.stellar.org
-VITE_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
-```
-
-> If `VITE_CONTRACT_ID` is missing, the app shows a setup warning instead of the poll UI.
-
----
-
-## Running Locally
-
-```bash
-npm run dev
-```
-
-Opens at `http://localhost:5173`
-
----
-
-## Contract Details
-
-| Field | Value |
-|---|---|
-| Contract Address | `CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
-| Deploy Tx Hash | `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | Network | Stellar Testnet |
-
-> Replace the placeholders above with your actual deployed contract address and deploy transaction hash.
-
----
-
-## How It Works
-
-1. **Connect Wallet** — Click "Connect Wallet" to open the StellarWalletsKit modal and select Freighter, xBull, Albedo, or Lobstr
-2. **View Poll** — The active poll loads with current vote counts fetched via Soroban simulation
-3. **Cast Vote** — Click an option to trigger the full transaction flow:
-   - `BUILDING` — constructs the Soroban invocation XDR
-   - `SIGNING` — opens wallet popup for signature
-   - `SUBMITTING` — broadcasts to Testnet
-   - `PENDING` — polls Horizon every 3 seconds for confirmation
-   - `SUCCESS` — displays tx hash with Stellar Expert link
-4. **Real-time Updates** — Horizon SSE streams new transactions; vote bars animate on every update
-5. **Disconnect** — Clears all wallet state and resets voted flags
-
----
-
-## Wallet Support
-
-| Wallet | Type |
-|---|---|
-| Freighter | Browser extension |
-| xBull | Browser extension |
-| Albedo | Web-based signer |
-| Lobstr | Mobile + extension |
-
----
-
-## Error Handling
-
-| Error | Message Shown |
-|---|---|
-| User closes wallet popup | "Transaction cancelled by user" |
-| Insufficient XLM | "Insufficient XLM for transaction fees" |
-| Already voted | "You have already voted in this poll" |
-| Network timeout | "Network error — please try again" |
-
----
-
-## Demo
-
-Live Demo: `https://your-demo-link.vercel.app`
-
----
-
-## Screenshots
-
-> Add screenshots to a `/screenshots` folder and update paths below.
-
-- `screenshots/wallet-modal.png` — Wallet connection modal
-- `screenshots/poll-voting.png` — Active poll with vote bars
-- `screenshots/tx-pending.png` — Transaction pending state
-- `screenshots/tx-success.png` — Vote confirmed with tx hash link
-
----
-
-## Smart Contract Functions
-
-| Function | Type | Description |
-|---|---|---|
-| `create_poll(question, options, creator)` | Write | Creates a new poll, returns `poll_id` |
-| `cast_vote(poll_id, option_index, voter)` | Write | Records a vote; errors if already voted or poll closed |
-| `get_results(poll_id)` | Read (sim) | Returns vote counts per option |
-| `close_poll(poll_id, caller)` | Write | Closes poll; errors if caller ≠ creator |
-| `has_voted(poll_id, address)` | Read (sim) | Returns whether address has voted |
-
----
 
 ## Project Structure
 
 ```
 src/
-  components/
-    WalletConnector.jsx     # Connect/disconnect wallet button
-    PollCard.jsx            # Poll question + vote buttons
-    VoteBar.jsx             # Animated percentage bar per option
-    TransactionStatus.jsx   # Tx state banner (Building → Success/Failed)
-    CreatePollForm.jsx      # Admin-only poll creation form
-    PollHistory.jsx         # Past votes feed
-  context/
-    WalletContext.jsx       # publicKey, walletType, connect, disconnect
-    PollContext.jsx         # activePoll, voteCounts, castVote, tx state machine
-  utils/
-    contract.js             # All Soroban contract calls
-    horizon.js              # Horizon SSE subscription + fallback polling
-    config.js               # Centralised env var access
-    format.js               # Address truncation, timestamp, percentage helpers
+├── components/
+│   ├── WalletConnector.jsx       # Connect / disconnect wallet button
+│   ├── PollHistory/
+│   │   └── PollHistory.jsx       # Live vote history feed
+│   └── CreatePoll/
+│       └── CreatePoll.jsx        # Poll creation form (UI-only)
+├── context/
+│   ├── WalletContext.jsx         # publicKey, connect, disconnect, auto-reconnect
+│   └── PollContext.jsx           # activePoll, voteCounts, castVote, tx state machine
+└── utils/
+    ├── contract.js               # All Soroban contract calls
+    ├── horizon.js                # Horizon SSE subscription + fallback polling
+    ├── config.js                 # Centralised environment variable access
+    └── format.js                 # Address truncation, timestamp, percentage helpers
 ```
 
----
+## Setup Instructions
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/your-username/stellar-live-poll.git
+cd stellar-live-poll
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Configure environment variables**
+
+Create a `.env` file in the project root:
+
+```env
+VITE_CONTRACT_ID=CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+VITE_HORIZON_URL=https://horizon-testnet.stellar.org
+VITE_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
+```
+
+> If `VITE_CONTRACT_ID` is missing or empty, the app displays a setup warning instead of the poll UI.
+
+4. **Start the development server**
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Contract Details
+
+| Field | Value |
+|---|---|
+| Network | Stellar Testnet |
+| Contract Address | `CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
+| Deploy Transaction Hash | `XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
+| Soroban RPC URL | `https://soroban-testnet.stellar.org` |
+
+## How It Works
+
+1. **Connect Wallet** — click "Connect Wallet" to open the StellarWalletsKit modal and select from Freighter, xBull, Albedo, or Lobstr
+2. **View Active Poll** — the current poll loads with live vote counts fetched via Soroban simulation (no fee)
+3. **Select an Option** — click any option card to highlight your choice; the submit button activates
+4. **Submit Vote** — the app builds a Soroban invocation XDR, requests your wallet signature, then broadcasts the transaction
+5. **Track Status** — a status banner cycles through BUILDING → SIGNING → SUBMITTING → PENDING in real time
+6. **Confirmation** — on SUCCESS, a green banner appears with a clickable link to the transaction on Stellar Expert
+7. **Live Results** — Horizon SSE streams new ledger events; vote bars animate to updated percentages within seconds
+8. **Poll History** — your vote is appended to the Recent Votes feed immediately; past votes load from Horizon on mount
+9. **Disconnect** — clicking your address pill clears all wallet state and resets voted flags
+
+## Wallet Support
+
+| Wallet | Type | Status |
+|---|---|---|
+| Freighter | Browser extension | ✅ Supported |
+| xBull | Browser extension | ✅ Supported |
+| Albedo | Web-based signer | ✅ Supported |
+| Lobstr | Mobile + extension | ✅ Supported |
+
+## Screenshots
+
+| View | Screenshot |
+|---|---|
+| Wallet connection modal | `screenshots/wallet-modal.png` |
+| Active poll with vote bars | `screenshots/poll-voting.png` |
+| Transaction pending state | `screenshots/tx-pending.png` |
+| Vote confirmed with tx hash | `screenshots/tx-success.png` |
+| Poll history feed | `screenshots/poll-history.png` |
 
 ## Future Improvements
 
-- Poll creation UI (CreatePollForm) wired to contract
-- Poll history feed from Horizon transaction history
-- Multiple concurrent polls
-- Mainnet deployment
+- [ ] Wire `CreatePoll` form to the Soroban `create_poll` contract function
+- [ ] Support multiple concurrent polls with a poll selector
+- [ ] Add poll expiry / close-poll UI for the poll creator
+- [ ] Persist poll history across sessions using Horizon transaction history endpoint
+- [ ] Deploy to Stellar Mainnet with environment toggle
+- [ ] Add unit and integration tests for contract utility functions
+- [ ] Implement WalletConnect support for mobile wallets
+
+## License
+
+[MIT](LICENSE)
+
+## Acknowledgements
+
+- [Stellar Development Foundation](https://stellar.org) — for the Stellar network, Soroban, and the Level 2 Developer Challenge
+- [Soroban Documentation](https://developers.stellar.org/docs/smart-contracts) — smart contract development guides
+- [Stellar Wallets Kit](https://github.com/Creit-Tech/Stellar-Wallets-Kit) by Creit Tech — multi-wallet modal integration
+- [Horizon API](https://developers.stellar.org/api/horizon) — real-time SSE transaction streaming
