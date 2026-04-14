@@ -124,6 +124,7 @@ The app runs at [http://localhost:5173](http://localhost:5173).
 | Vote confirmed with tx hash | `screenshots/tx-success.png` |
 | Poll history feed | `screenshots/poll-history.png` |
 
+
 ## Future Improvements
 
 - [ ] Connect the Create Poll form to the `create_poll` contract function
