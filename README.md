@@ -116,11 +116,9 @@ The app runs at [http://localhost:5173](http://localhost:5173).
 
 ## Screenshots
 
-
-
 ### Wallet Connection Modal
 
-![Wallet modal](screenshots/wallet-modal.jpeg)
+![Wallet modal](./screenshots/wallet-modal.jpeg)
 
 
 ## Future Improvements
