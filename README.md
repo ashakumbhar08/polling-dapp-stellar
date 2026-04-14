@@ -118,7 +118,7 @@ The app runs at [http://localhost:5173](http://localhost:5173).
 
 | View | Screenshot |
 |---|---|
-| Wallet connection modal | ![Wallet connection modal](screenshots/wallet-modal.png) |
+| Wallet connection modal | ![Wallet modal](screenshots/wallet-modal.jpeg) |
 | Active poll with vote bars | `screenshots/poll-voting.png` |
 | Transaction pending state | `screenshots/tx-pending.png` |
 | Vote confirmed with tx hash | `screenshots/tx-success.png` |
