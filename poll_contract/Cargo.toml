@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
-members = [
-  "contracts/*",
-]
+# members = ["contracts/*"]
+# Uncomment the line above and add your PollContract under contracts/
+# once the Soroban contract source is included in this repository.
 
 [workspace.dependencies]
 soroban-sdk = "25"
@@ -17,7 +17,6 @@ panic = "abort"
 codegen-units = 1
 lto = true
 
-# For more information about this profile see https://soroban.stellar.org/docs/basic-tutorials/logging#cargotoml-profile
 [profile.release-with-logs]
 inherits = "release"
 debug-assertions = true

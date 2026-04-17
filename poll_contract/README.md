@@ -1,22 +1,43 @@
-# Soroban Project
+# PollContract — Soroban Smart Contract
 
-## Project Structure
+This directory contains the Soroban smart contract for the Stellar Live Poll dApp.
 
-This repository uses the recommended structure for a Soroban project:
+## Structure
 
-```text
-.
-├── contracts
-│   └── hello_world
-│       ├── src
-│       │   ├── lib.rs
-│       │   └── test.rs
-│       └── Cargo.toml
+```
+poll_contract/
+├── contracts/
+│   └── poll/          # PollContract source
+│       └── src/
+│           ├── lib.rs
+│           └── test.rs
 ├── Cargo.toml
-└── README.md
+└── Cargo.lock
 ```
 
-- New Soroban contracts can be put in `contracts`, each in their own directory. There is already a `hello_world` contract in there to get you started.
-- If you initialized this project with any other example contracts via `--with-example`, those contracts will be in the `contracts` directory as well.
-- Contracts should have their own `Cargo.toml` files that rely on the top-level `Cargo.toml` workspace for their dependencies.
-- Frontend libraries can be added to the top-level directory as well. If you initialized this project with a frontend template via `--frontend-template` you will have those files already included.
+## Contract Functions
+
+| Function | Type | Description |
+|---|---|---|
+| `create_poll(question, options, creator)` | Write | Creates a new poll, returns `poll_id` |
+| `cast_vote(poll_id, option_index, voter)` | Write | Records a vote; errors if already voted or poll closed |
+| `get_results(poll_id)` | Read | Returns vote counts per option |
+| `close_poll(poll_id, caller)` | Write | Closes poll; errors if caller is not creator |
+| `has_voted(poll_id, address)` | Read | Returns whether an address has voted |
+
+## Build
+
+```bash
+stellar contract build
+```
+
+## Deploy
+
+```bash
+stellar contract deploy \
+  --wasm target/wasm32v1-none/release/poll.wasm \
+  --network testnet \
+  --source <your_account>
+```
+
+After deploying, copy the contract address into your `.env` file as `VITE_CONTRACT_ID`.
