@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
-# members = ["contracts/*"]
-# Uncomment the line above and add your PollContract under contracts/
-# once the Soroban contract source is included in this repository.
+members = [
+  "contracts/*",
+]
 
 [workspace.dependencies]
 soroban-sdk = "25"
